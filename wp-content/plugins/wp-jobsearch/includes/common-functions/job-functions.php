@@ -2969,7 +2969,7 @@ function jobsearch_job_det_applybtn_acthtml($html, $job_id, $use_in = 'filter', 
                 <span class="deadline-closed"><?php esc_html_e('The Application deadline closed.', 'wp-jobsearch'); ?></span>
                 <?php
             } else {
-                $btn_txt = "<small>" . esc_html__('Apply for the job', 'wp-jobsearch') . "</small>";
+                $btn_txt = "<small>" . esc_html__('Apply Now', 'wp-jobsearch') . "</small>";
                 $arg = array(
                     'classes' => 'jobsearch-applyjob-btn jobsearch-job-apply-btn-con',
                     'btn_before_label' => $btn_txt,
@@ -2977,8 +2977,24 @@ function jobsearch_job_det_applybtn_acthtml($html, $job_id, $use_in = 'filter', 
                     'btn_applied_label' => esc_html__('Applied', 'wp-jobsearch'),
                     'job_id' => $job_id
                 );
-                $apply_filter_btn = apply_filters('jobsearch_job_applications_btn', '', $arg);
-                echo apply_filters('jobsearch_job_det_applybtn_alhtml', $apply_filter_btn, $arg, $use_in, $job_id);
+
+                
+                if($job_aply_method == 'with_email') {
+                    $apply_filter_btn = apply_filters('jobsearch_job_applications_btn', '', $arg);
+                    echo apply_filters('jobsearch_job_det_applybtn_alhtml', $apply_filter_btn, $arg, $use_in, $job_id);
+                }
+                else if($job_aply_method == 'external') {
+                    $external_link = get_post_meta($job_id, 'job_apply_url', true);
+                    echo '<a href="'.$external_link.'" class="jobsearch-applyjob-btn jobsearch-job-apply-btn-con jobsearch-extrnal-applybtn-act" target="_blank"><small>Apply On Website</small></a>';
+                }
+                else if($job_aply_method == 'both') {
+                    $apply_filter_btn = apply_filters('jobsearch_job_applications_btn', '', $arg);
+                    echo apply_filters('jobsearch_job_det_applybtn_alhtml', $apply_filter_btn, $arg, $use_in, $job_id);
+                    
+                    $external_link = get_post_meta($job_id, 'job_apply_url', true);
+                    echo '<a href="'.$external_link.'" class="jobsearch-applyjob-btn jobsearch-job-apply-btn-con jobsearch-extrnal-applybtn-act" target="_blank"><small>Apply On Website</small></a>';
+                }
+                
             }
 
             $job_apply_deadline_sw = isset($jobsearch_plugin_options['job_appliction_deadline']) ? $jobsearch_plugin_options['job_appliction_deadline'] : '';

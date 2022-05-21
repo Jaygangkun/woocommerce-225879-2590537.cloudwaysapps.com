@@ -326,6 +326,8 @@ function jobsearch_jobs_meta_settings()
             if ($email_flag) {
                 $apply_type_options['with_email'] = esc_html__('By Email', 'wp-jobsearch');
             }
+
+            $apply_type_options['both'] = esc_html__('Email & External URL', 'wp-jobsearch');
             $apply_type_options['none'] = esc_html__('None', 'wp-jobsearch');
 
             ?>

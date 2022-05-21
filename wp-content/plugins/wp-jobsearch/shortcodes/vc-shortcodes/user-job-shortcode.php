@@ -1926,6 +1926,8 @@ function jobsearch_user_job_shortcode($atts)
                                 $internal_flag = false;
                                 $external_flag = false;
                                 $email_flag = false;
+                                $both_flag = true;
+                                $type_hidden_value = 'both';
                                 if (isset($job_extrnal_apply_switch) && is_array($job_extrnal_apply_switch) && sizeof($job_extrnal_apply_switch) > 0) {
                                     foreach ($job_extrnal_apply_switch as $apply_switch) {
                                         if ($apply_switch == 'internal') {
@@ -1955,6 +1957,8 @@ function jobsearch_user_job_shortcode($atts)
                                 if ($external_flag && $email_flag) {
                                     $dropdown_flag = true;
                                 }
+
+                                $dropdown_flag = true;
                             if ($dropdown_flag) {
                                 $jobapply_type_req = isset($jobsearch_plugin_options['apply_type_required']) ? $jobsearch_plugin_options['apply_type_required'] : '';
                                 ?>
@@ -1963,7 +1967,7 @@ function jobsearch_user_job_shortcode($atts)
                                     <div class="jobsearch-profile-select">
                                         <select id="jobsearch_job_apply_type"<?php echo($jobapply_type_req == 'on' ? ' required="required"' : '') ?>
                                                 class="selectize-select"
-                                                name="job_apply_type"<?php echo($jobapply_type_req == 'on' ? ' placeholder="' . esc_html__('Select Apply Type', 'wp-jobsearch') . '"' : '') ?> multiple>
+                                                name="job_apply_type"<?php echo($jobapply_type_req == 'on' ? ' placeholder="' . esc_html__('Select Apply Type', 'wp-jobsearch') . '"' : '') ?>>
                                             <?php
                                             if ($jobapply_type_req == 'on') {
                                                 ?>
@@ -1980,6 +1984,9 @@ function jobsearch_user_job_shortcode($atts)
                                             <?php }
                                             if ($email_flag) { ?>
                                                 <option value="with_email" <?php echo($is_updating && $_job_apply_type == 'with_email' ? 'selected="selected"' : '') ?>><?php esc_html_e('By Email', 'wp-jobsearch') ?></option>
+                                            <?php } 
+                                            if ($both_flag) { ?>
+                                                <option value="both" <?php echo($is_updating && $_job_apply_type == 'both' ? 'selected="selected"' : '') ?>><?php esc_html_e('Email & External URL', 'wp-jobsearch') ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -1996,6 +2003,10 @@ function jobsearch_user_job_shortcode($atts)
                                             withemail_inp_field.addClass('jobsearch-req-field');
                                         } else if (jQuery(this).val() == 'external') {
                                             extrnal_inp_field.addClass('jobsearch-req-field');
+                                        }
+                                        else if (jQuery(this).val() == 'both') {
+                                            extrnal_inp_field.addClass('jobsearch-req-field');
+                                            withemail_inp_field.addClass('jobsearch-req-field');
                                         }
                                         else if (jQuery(this).val().indexOf('external') >=0 && jQuery(this).val().indexOf('with_email') >=0  ) {
                                             extrnal_inp_field.addClass('jobsearch-req-field');
@@ -2026,7 +2037,7 @@ function jobsearch_user_job_shortcode($atts)
                             }
                             if ($external_flag) {
                             $external_final_flag = false;
-                            if ($is_updating && $_job_apply_type == 'external') {
+                            if ($is_updating && ($_job_apply_type == 'external' || $_job_apply_type == 'both')) {
                                 $external_final_flag = true;
                             } elseif (!$is_updating && !$internal_flag) {
                                 $external_final_flag = true;
@@ -2036,13 +2047,13 @@ function jobsearch_user_job_shortcode($atts)
                                     style="display: <?php echo($external_final_flag ? 'inline-block' : 'none') ?>;">
                                     <label><?php esc_html_e('External URL for Apply Job *', 'wp-jobsearch') ?></label>
                                     <input type="text" name="job_apply_url"
-                                           class="external-url-input<?php echo($is_updating && $_job_apply_type == 'external' ? ' jobsearch-req-field' : '') ?>" <?php echo($is_updating ? 'value="' . jobsearch_esc_html($_job_apply_url) . '"' : '') ?>>
+                                           class="external-url-input<?php echo($is_updating && ($_job_apply_type == 'external' || $_job_apply_type == 'both') ? ' jobsearch-req-field' : '') ?>" <?php echo($is_updating ? 'value="' . jobsearch_esc_html($_job_apply_url) . '"' : '') ?>>
                                 </li>
                             <?php
                             }
                             if ($email_flag) {
                             $email_final_flag = false;
-                            if ($is_updating && $_job_apply_type == 'with_email') {
+                            if ($is_updating && ($_job_apply_type == 'with_email' || $_job_apply_type == 'both')) {
                                 $email_final_flag = true;
                             } elseif (!$is_updating && !$internal_flag && !$external_flag) {
                                 $email_final_flag = true;
@@ -2052,7 +2063,7 @@ function jobsearch_user_job_shortcode($atts)
                                     style="display: <?php echo($email_final_flag ? 'inline-block' : 'none') ?>;">
                                     <label><?php esc_html_e('Job Apply Email *', 'wp-jobsearch') ?></label>
                                     <input type="text" name="job_apply_email"
-                                           class="apply-email-input<?php echo($is_updating && $_job_apply_type == 'with_email' ? ' jobsearch-req-field' : '') ?>"
+                                           class="apply-email-input<?php echo($is_updating && ($_job_apply_type == 'with_email' || $_job_apply_type == 'both') ? ' jobsearch-req-field' : '') ?>"
                                         <?php echo($is_updating ? 'value="' . jobsearch_esc_html($_job_apply_email) . '"' : '') ?>>
                                 </li>
                                 <?php

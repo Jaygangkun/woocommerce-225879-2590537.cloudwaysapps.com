@@ -3460,6 +3460,7 @@ if (class_exists('Redux') && method_exists($redux_class, 'set_args')) {
                         'internal' => __('Internal', 'wp-jobsearch'),
                         'external' => __('External Website URL', 'wp-jobsearch'),
                         'email' => __('Only Email', 'wp-jobsearch'),
+                        'both' => __('Both Email and External URL', 'wp-jobsearch'),
                     ),
                     'default' => array('internal', 'external', 'email'),
                 ),

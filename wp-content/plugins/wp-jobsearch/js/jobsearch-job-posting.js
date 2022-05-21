@@ -341,6 +341,9 @@ jQuery(document).on('change', '#jobsearch_job_apply_type', function () {
     } else if (jQuery(this).val() == 'with_email') {
         jQuery('#job-apply-by-email').slideDown();
         jQuery('#job-apply-external-url').hide();
+    } else if (jQuery(this).val() == 'both') {
+        jQuery('#job-apply-by-email').slideDown();
+        jQuery('#job-apply-external-url').slideDown();
     } else if (jQuery(this).val().indexOf('external') >=0 && jQuery(this).val().indexOf('with_email') >=0  ) {
         jQuery('#job-apply-external-url').slideDown();
         jQuery('#job-apply-by-email').slideDown();

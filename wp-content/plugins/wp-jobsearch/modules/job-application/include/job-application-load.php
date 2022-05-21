@@ -1627,6 +1627,8 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                     $mubtn_withlogin_switch = true;
                 } else if ($job_aply_type == 'external' && $external_signin_switch) {
                     $mubtn_withlogin_switch = true;
+                } else if ($job_aply_type == 'both') {
+                    $mubtn_withlogin_switch = true;
                 }
                 
                 if (!is_user_logged_in() && $apply_without_login != 'on' && $mubtn_withlogin_switch === true) {
@@ -1671,7 +1673,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                     $is_applied = true;
                 }
 
-                if ($job_extrnal_apply_email_switch == 'email' && $job_aply_type == 'with_email') {
+                if ($job_extrnal_apply_email_switch == 'email' && ($job_aply_type == 'with_email' || $job_aply_type == 'both')) {
                     if ($apply_without_login == 'off' && !is_user_logged_in() && $email_signin_switch) {
                         $classes_str = 'jobsearch-open-signin-tab';
                         ?>
